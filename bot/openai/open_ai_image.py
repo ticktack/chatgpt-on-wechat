@@ -23,10 +23,10 @@ class OpenAIImage(object):
             response = openai.Image.create(
                 api_key=api_key,
                 prompt=query,  # 图片描述
-                n=4,  # 每次生成图片的数量
+                n=conf().get("image_create_number", 4),  # 每次生成图片的数量
                 size=conf().get("image_create_size", "1024x1024"),  # 图片大小,可选有 256x256, 512x512, 1024x1024
             )
-            image_url = response["data"][0]["url"]
+            image_url = response["data"][0]["url"]+","response["data"][1]["url"]+","response["data"][2]["url"]+","response["data"][3]["url"]
             logger.info("[OPEN_AI] image_url={}".format(image_url))
             return True, image_url
         except openai.error.RateLimitError as e:
